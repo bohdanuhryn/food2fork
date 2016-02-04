@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Food2Fork</string>
+
+    <string name="list">Список</string>
+    <string name="table">Таблиця</string>
+
+    <string name="trending">За популярністю</string>
+    <string name="top">За рейтингом</string>
+
 </resources>
