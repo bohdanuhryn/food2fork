@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.bohdanuhryn.food2fork.models.Recipe;
+import com.bohdanuhryn.food2fork.service.ServiceManager;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public class RecipesListLoader extends AsyncTaskLoader<ArrayList<Recipe>> {
             r.id = i;
             arr.add(r);
         }
+        arr = ServiceManager.getRecipesList();
         return arr;
     }
 }

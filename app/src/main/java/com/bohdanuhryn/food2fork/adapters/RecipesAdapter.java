@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bohdanuhryn.food2fork.R;
 import com.bohdanuhryn.food2fork.models.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,9 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Recipe item = data.get(position);
+        holder.titleView.setText(item.title);
+        Picasso.with(holder.imageView.getContext()).load(item.image_url).into(holder.imageView);
+        holder.rankView.setText("Social rank: " + String.format("%.2f", item.social_rank) + "%");
     }
 
     @Override
