@@ -42,7 +42,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         Recipe item = data.get(position);
         holder.titleView.setText(item.title);
         Picasso.with(holder.imageView.getContext()).load(item.image_url).into(holder.imageView);
-        holder.rankView.setText("Social rank: " + String.format("%.2f", item.social_rank) + "%");
+        holder.publisherView.setText(item.publisher);
+        holder.rankView.setText(String.format("%.0f%%", item.social_rank));
     }
 
     @Override
@@ -58,6 +59,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
 
         @Bind(R.id.recipe_title_view) TextView titleView;
         @Bind(R.id.recipe_image_view) ImageView imageView;
+        @Bind(R.id.recipe_publisher_view) TextView publisherView;
         @Bind(R.id.recipe_rank_view) TextView rankView;
 
         public ViewHolder(View view) {

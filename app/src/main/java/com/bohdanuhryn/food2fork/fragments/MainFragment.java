@@ -11,14 +11,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.bohdanuhryn.food2fork.R;
 import com.bohdanuhryn.food2fork.adapters.RecipesAdapter;
 import com.bohdanuhryn.food2fork.loaders.RecipesListLoader;
 import com.bohdanuhryn.food2fork.models.Recipe;
+import com.bohdanuhryn.food2fork.models.RecipeSearchParams;
+import com.bohdanuhryn.food2fork.models.RecipesList;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,16 +29,21 @@ import butterknife.ButterKnife;
  * Created by BohdanUhryn on 04.02.2016.
  */
 public class MainFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<ArrayList<Recipe>> {
+        implements LoaderManager.LoaderCallbacks<RecipesList> {
 
     public static final String TAG = "MainFragment";
 
-    private OnMainFragmentListener onMainFragmentListener;
+    private OnMainFragmentListener mainFragmentListener;
 
     private View rootView;
-    @Bind(R.id.recipes_recycler_view) RecyclerView recipesRecyclerView;
+    @Bind(R.id.recipes_not_found_view)
+    TextView recipesNotFound;
+    @Bind(R.id.recipes_recycler_view)
+    RecyclerView recipesRecyclerView;
+
     private RecipesAdapter recipesAdapter;
 
+    private RecipeSearchParams recipeSearchParams;
     private ArrayList<Recipe> recipesList;
 
     public static MainFragment newInstance() {
@@ -54,7 +61,7 @@ public class MainFragment extends Fragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onMainFragmentListener = (OnMainFragmentListener) context;
+            mainFragmentListener = (OnMainFragmentListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement OnMainFragmentListener");
@@ -64,22 +71,27 @@ public class MainFragment extends Fragment
     @Override
     public void onDetach() {
         super.onDetach();
-        onMainFragmentListener = null;
+        mainFragmentListener = null;
     }
 
     @Override
-    public Loader<ArrayList<Recipe>> onCreateLoader(int id, Bundle args) {
-        return new RecipesListLoader(getActivity(), "", "r", 1);
+    public Loader<RecipesList> onCreateLoader(int id, Bundle args) {
+        return new RecipesListLoader(getActivity(), recipeSearchParams);
     }
 
     @Override
-    public void onLoadFinished(Loader<ArrayList<Recipe>> loader, ArrayList<Recipe> data) {
-        recipesList = data;
-        setupRecipesAdapter();
+    public void onLoadFinished(Loader<RecipesList> loader, RecipesList data) {
+        if (data != null) {
+            recipesList = data.recipes;
+            recipesNotFound.setVisibility(View.INVISIBLE);
+            setupRecipesAdapter();
+        } else {
+            recipesNotFound.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader<ArrayList<Recipe>> loader) {
+    public void onLoaderReset(Loader<RecipesList> loader) {
         recipesList = null;
         setupRecipesAdapter();
     }
@@ -109,9 +121,8 @@ public class MainFragment extends Fragment
         recipesAdapter.setOnItemClickListener(new RecipesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (onMainFragmentListener != null && recipesList != null) {
-                    //TODO: change position to recipe id
-                    onMainFragmentListener.onStartRecipeActivity(recipesList.get(position).id);
+                if (mainFragmentListener != null && recipesList != null) {
+                    mainFragmentListener.onStartRecipeActivity(recipesList.get(position).getId());
                 }
             }
         });
