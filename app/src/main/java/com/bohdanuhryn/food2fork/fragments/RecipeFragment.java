@@ -41,7 +41,7 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
     @Bind(R.id.recipe_rank_view)
     TextView rankView;
     @Bind(R.id.recipe_ingredients_view)
-    ListView ingredientsView;
+    TextView ingredientsView;
 
     private long recipeId;
     private Recipe recipe;
@@ -105,8 +105,16 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
             publisherView.setText(Html.fromHtml(String.format("<a href=\"%s\">%s</a>", recipe.publisher_url, recipe.publisher)));
             publisherView.setMovementMethod(LinkMovementMethod.getInstance());
             rankView.setText(String.format("%.0f%%", recipe.social_rank));
-            ingredientsView.setAdapter(new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_list_item_1, recipe.ingredients));
+        }
+        setupIngredientsView();
+    }
+    private void setupIngredientsView() {
+        if (recipe != null && recipe.ingredients != null) {
+            String ingredientsStr = "";
+            for (int i = 0; i < recipe.ingredients.size(); ++i) {
+                ingredientsStr += "\n - " + recipe.ingredients.get(i) + ";\n";
+            }
+            ingredientsView.setText(ingredientsStr);
         }
     }
 
