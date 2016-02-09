@@ -7,12 +7,12 @@
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
         android:title="@string/search_clear"
         android:visible="false"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="ifRoom|collapseActionView"
+        app:showAsAction="always"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
     <item

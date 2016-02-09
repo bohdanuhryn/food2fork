@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="@dimen/padding_half">
 
     <android.support.v7.widget.CardView
@@ -12,10 +12,10 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         card_view:cardCornerRadius="8dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -25,44 +25,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_half"
+                android:layout_alignParentTop="true"
                 android:textSize="18sp"
                 android:autoLink="all"
-                tools:text="Recipe title"/>
+                tools:text="Recipe title" />
+
+            <LinearLayout
+                android:id="@+id/recipe_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/recipe_publisher_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:padding="@dimen/padding_half"
+                    android:gravity="left"
+                    android:textSize="16sp"
+                    tools:text="Publisher name"
+                    android:autoLink="all"/>
+
+                <TextView
+                    android:id="@+id/recipe_rank_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:padding="@dimen/padding_half"
+                    android:gravity="right"
+                    android:textSize="16sp"
+                    tools:text="Social rank: 97%"/>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/recipe_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/recipe_title_view"
+                android:layout_above="@id/recipe_footer"
                 tools:src="@android:drawable/btn_star"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/recipe_rank_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_half"
-                    android:layout_alignParentRight="true"
-                    android:textSize="16sp"
-                    tools:text="Social rank: 97%"/>
-
-                <TextView
-                    android:id="@+id/recipe_publisher_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_half"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toStartOf="@id/recipe_rank_view"
-                    android:textSize="16sp"
-                    tools:text="Publisher name"
-                    android:autoLink="all"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 

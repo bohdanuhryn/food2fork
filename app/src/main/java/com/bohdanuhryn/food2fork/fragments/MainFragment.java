@@ -123,9 +123,15 @@ public class MainFragment extends Fragment {
     }
 
     private void setupRecipesRecyclerView() {
-        LinearLayoutManager recipesLayoutManager = new LinearLayoutManager(getActivity());
+        recipesLayoutManager = new LinearLayoutManager(getActivity());
         recipesRecyclerView.setLayoutManager(recipesLayoutManager);
+        setupEndlessRecycler();
+        setupRecipesAdapter();
+    }
+
+    private void setupEndlessRecycler() {
         recipesRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(recipesLayoutManager) {
+
             @Override
             public void onLoadMore(int current_page) {
                 if (recipesList != null && recipeSearchParams != null) {
@@ -139,15 +145,16 @@ public class MainFragment extends Fragment {
 
                         @Override
                         protected void onPostExecute(RecipesList rl) {
-                            recipesList.addAll(rl.recipes);
-                            recipesAdapter.notifyDataSetChanged();
+                            if (rl != null && rl.recipes != null) {
+                                recipesList.addAll(rl.recipes);
+                                recipesAdapter.notifyDataSetChanged();
+                            }
                         }
                     };
                     at.execute();
                 }
             }
         });
-        setupRecipesAdapter();
     }
 
     private void setupRecipesAdapter() {
@@ -173,13 +180,16 @@ public class MainFragment extends Fragment {
 
             @Override
             protected void onPreExecute() {
+                setupEndlessRecycler();
                 recipesProgressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             protected void onPostExecute(RecipesList data) {
-                recipesList = data.recipes;
-                setupRecipesAdapter();
+                if (data != null) {
+                    recipesList = data.recipes;
+                    setupRecipesAdapter();
+                }
                 recipesProgressBar.setVisibility(View.INVISIBLE);
             }
         };
