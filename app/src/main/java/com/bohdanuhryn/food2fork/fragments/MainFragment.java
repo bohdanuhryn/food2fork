@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +41,8 @@ public class MainFragment extends Fragment {
     RecyclerView recipesRecyclerView;
     @Bind(R.id.recipes_progress_bar)
     ProgressBar recipesProgressBar;
+    @Bind(R.id.recipes_swipe_refresh)
+    SwipeRefreshLayout recipesSwipeRefresh;
 
     private RecyclerView.LayoutManager recipesLayoutManager;
     private RecipesAdapter recipesAdapter;
@@ -114,6 +117,7 @@ public class MainFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         initViews();
         setupRecipesRecyclerView();
+        setupSwipeRefresh();
         loadRecipes();
         return rootView;
     }
@@ -168,6 +172,16 @@ public class MainFragment extends Fragment {
             }
         });
         recipesRecyclerView.setAdapter(recipesAdapter);
+    }
+
+    private void setupSwipeRefresh() {
+        recipesSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadRecipes();
+                recipesSwipeRefresh.setRefreshing(false);
+            }
+        });
     }
 
     private void loadRecipes() {

@@ -94,12 +94,12 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchRecipe(query);
-                return false;
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                return true;
             }
         });
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     searchView.setQuery(prevSearchQuery, false);
+                    searchClearItem.setVisible(false);
                 } else if (prevSearchQuery != null && prevSearchQuery.length() > 0) {
                     searchClearItem.setVisible(true);
                 }

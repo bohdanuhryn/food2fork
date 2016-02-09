@@ -12,7 +12,7 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         card_view:cardCornerRadius="8dp">
 
         <RelativeLayout
@@ -56,14 +56,14 @@
                     android:padding="@dimen/padding_half"
                     android:gravity="right"
                     android:textSize="16sp"
-                    tools:text="Social rank: 97%"/>
+                    tools:text="Rank: 97%"/>
 
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/recipe_image_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/recipe_title_view"
                 android:layout_above="@id/recipe_footer"
