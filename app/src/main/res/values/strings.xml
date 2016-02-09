@@ -1,12 +1,15 @@
 <resources>
     <string name="app_name">Food2Fork</string>
 
+    <string name="view">Вигляд</string>
     <string name="list">Список</string>
     <string name="table">Таблиця</string>
 
+    <string name="sort">Сортування</string>
     <string name="trending">За популярністю</string>
     <string name="top">За рейтингом</string>
 
     <string name="recipes_not_found">Рецепти не знайдено!</string>
+    <string name="recipes_more_progress">Завантажується ще . . .</string>
 
 </resources>
