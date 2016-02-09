@@ -19,13 +19,13 @@ public class Recipe {
     public int page;
     public ArrayList<String> ingredients;
 
-    public long getId() {
-        long id = -1;
+    public String getId() {
+        String id = "";
         try {
             int lastIndex = f2f_url.lastIndexOf("/");
-            id = Long.parseLong(f2f_url.substring(lastIndex + 1));
+            id = f2f_url.substring(lastIndex + 1);
         } catch (Exception e) {
-            Log.e("Recipe", "Cannot get id from f2f_url!");
+            Log.e("Recipe", "Cannot get from f2f_url='" + f2f_url + "'!");
         }
         return id;
     }

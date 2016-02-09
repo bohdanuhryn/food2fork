@@ -23,7 +23,7 @@ public interface IF2fApi {
     @GET("/api/get")
     Call<RecipeGet> getRecipeGet(
             @Query("key") String key,
-            @Query("rId") long rId
+            @Query("rId") String rId
     );
 
 }

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
     private String prevSearchQuery;
 
     @Override
-    public void onStartRecipeActivity(long id) {
+    public void onStartRecipeActivity(String id) {
         Intent intent = new Intent(this, RecipeActivity.class);
         intent.putExtra(RecipeActivity.RECIPE_ID, id);
         startActivity(intent);
@@ -139,12 +139,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
     private void actionViewList() {
         if (mainFragment != null) {
             mainFragment.setViewList();
+            mainFragment.startSearch();
         }
     }
 
     private void actionViewTable() {
         if (mainFragment != null) {
             mainFragment.setViewTable();
+            mainFragment.startSearch();
         }
     }
 

@@ -43,13 +43,13 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
     @Bind(R.id.recipe_ingredients_view)
     TextView ingredientsView;
 
-    private long recipeId;
+    private String recipeId;
     private Recipe recipe;
 
-    public static RecipeFragment newInstance(long id) {
+    public static RecipeFragment newInstance(String id) {
         RecipeFragment fragment = new RecipeFragment();
         Bundle args = new Bundle();
-        args.putLong(RECIPE_ID, id);
+        args.putString(RECIPE_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,9 +87,9 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
 
     private void readArguments() {
         Bundle args = getArguments();
-        recipeId = -1;
+        recipeId = "";
         if (args != null) {
-            recipeId = args.getLong(RECIPE_ID);
+            recipeId = args.getString(RECIPE_ID);
         }
     }
 

@@ -44,9 +44,9 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     private void createFragment() {
-        long recipeId = -1;
+        String recipeId = "";
         if (getIntent().getExtras() != null) {
-            recipeId = getIntent().getExtras().getLong(RECIPE_ID, -1);
+            recipeId = getIntent().getExtras().getString(RECIPE_ID, "");
         }
         recipeFragment = RecipeFragment.newInstance(recipeId);
         getSupportFragmentManager()

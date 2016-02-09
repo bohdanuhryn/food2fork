@@ -60,7 +60,7 @@ public class F2fManager {
         return list;
     }
 
-    public static Recipe getRecipe(long id) {
+    public static Recipe getRecipe(String id) {
         Recipe recipe = null;
         if (retrofit == null) {
             init();
@@ -71,7 +71,7 @@ public class F2fManager {
                 Call<RecipeGet> call = apiService.getRecipeGet(API_KEY, id);
                 Response<RecipeGet> response = call.execute();
                 recipe = response.body().recipe;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.e(TAG, "getRecipe method error! " + e.getMessage());
             }
         }

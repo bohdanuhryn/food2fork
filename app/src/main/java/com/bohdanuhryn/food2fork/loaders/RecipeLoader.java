@@ -11,9 +11,9 @@ import com.bohdanuhryn.food2fork.service.F2fManager;
  */
 public class RecipeLoader extends AsyncTaskLoader<Recipe> {
 
-    private long id;
+    private String id;
 
-    public RecipeLoader(Context context, long id) {
+    public RecipeLoader(Context context, String id) {
         super(context);
         this.id = id;
     }

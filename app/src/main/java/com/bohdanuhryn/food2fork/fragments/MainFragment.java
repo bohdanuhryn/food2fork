@@ -197,6 +197,6 @@ public class MainFragment extends Fragment {
     }
 
     public interface OnMainFragmentListener {
-        public void onStartRecipeActivity(long id);
+        public void onStartRecipeActivity(String id);
     }
 }
