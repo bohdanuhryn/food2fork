@@ -26,7 +26,9 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_half"
                 android:layout_alignParentTop="true"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="4"
                 android:autoLink="all"
                 tools:text="Recipe title" />
 
@@ -44,7 +46,8 @@
                     android:layout_weight="0.6"
                     android:padding="@dimen/padding_half"
                     android:gravity="left"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
+                    android:maxLines="4"
                     tools:text="Publisher name"
                     android:autoLink="all"/>
 
@@ -55,7 +58,7 @@
                     android:layout_weight="0.4"
                     android:padding="@dimen/padding_half"
                     android:gravity="right"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     tools:text="Rank: 97%"/>
 
             </LinearLayout>
