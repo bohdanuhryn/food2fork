@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
 
     private MainFragment mainFragment;
     private SearchView searchView;
+    private MenuItem searchClearItem;
 
     private String prevSearchQuery;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
         MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         setupSearchView();
+        searchClearItem = menu.findItem(R.id.action_search_clear);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -69,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
             case R.id.action_view_table:
                 actionViewTable();
                 item.setChecked(true);
+                return true;
+            case R.id.action_search_clear:
+                searchRecipe("");
+                searchClearItem.setVisible(false);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -101,27 +107,27 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnMa
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                EditText et = ViewUtils.getEditText(MainActivity.this, searchView);
-                if (et.getText().toString().isEmpty() && searchView.isFocused()) {
+                /*EditText et = ViewUtils.getEditText(MainActivity.this, searchView);
+                if (et.getText().toString().isEmpty() && searchView.is .isFocused()) {
                     searchRecipe("");
-                }
+                }*/
                 return false;
             }
         });
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                /*if (hasFocus) {
-                    ((SearchView) v).setQuery(prevSearchQuery, false);
-                } else {
-
-                }*/
+                if (hasFocus) {
+                    searchView.setQuery(prevSearchQuery, false);
+                } else if (prevSearchQuery.length() > 0) {
+                    searchClearItem.setVisible(true);
+                }
             }
         });
     }
 
     private void searchRecipe(String query) {
-        //prevSearchQuery = query;
+        prevSearchQuery = query;
         if (mainFragment != null) {
             mainFragment.setSearchQuery(query);
             mainFragment.startSearch();

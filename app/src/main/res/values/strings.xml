@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Food2Fork</string>
 
+    <string name="search_clear">Шукати все</string>
+
     <string name="view">Вигляд</string>
     <string name="list">Список</string>
     <string name="table">Таблиця</string>
