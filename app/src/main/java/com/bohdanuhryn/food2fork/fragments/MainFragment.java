@@ -1,7 +1,6 @@
 package com.bohdanuhryn.food2fork.fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +25,8 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by BohdanUhryn on 04.02.2016.
@@ -140,22 +141,20 @@ public class MainFragment extends Fragment {
             public void onLoadMore(int current_page) {
                 if (recipesList != null && recipeSearchParams != null) {
                     ++recipeSearchParams.page;
-                    AsyncTask<Void, Void, RecipesList> at = new AsyncTask<Void, Void, RecipesList>() {
-
+                    F2fManager.getRecipesList(recipeSearchParams).enqueue(new Callback<RecipesList>() {
                         @Override
-                        protected RecipesList doInBackground(Void... params) {
-                            return F2fManager.getRecipesList(recipeSearchParams);
-                        }
-
-                        @Override
-                        protected void onPostExecute(RecipesList rl) {
-                            if (rl != null && rl.recipes != null) {
-                                recipesList.addAll(rl.recipes);
+                        public void onResponse(Response<RecipesList> response) {
+                            if (response.body() != null && response.body().recipes != null) {
+                                recipesList.addAll(response.body().recipes);
                                 recipesAdapter.notifyDataSetChanged();
                             }
                         }
-                    };
-                    at.execute();
+
+                        @Override
+                        public void onFailure(Throwable t) {
+
+                        }
+                    });
                 }
             }
         });
@@ -185,29 +184,23 @@ public class MainFragment extends Fragment {
     }
 
     private void loadRecipes() {
-        AsyncTask<Void, Void, RecipesList> at = new AsyncTask<Void, Void, RecipesList>() {
-
+        setupEndlessRecycler();
+        recipesProgressBar.setVisibility(View.VISIBLE);
+        F2fManager.getRecipesList(recipeSearchParams).enqueue(new Callback<RecipesList>() {
             @Override
-            protected RecipesList doInBackground(Void... params) {
-                return F2fManager.getRecipesList(recipeSearchParams);
-            }
-
-            @Override
-            protected void onPreExecute() {
-                setupEndlessRecycler();
-                recipesProgressBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            protected void onPostExecute(RecipesList data) {
-                if (data != null) {
-                    recipesList = data.recipes;
+            public void onResponse(Response<RecipesList> response) {
+                if (response.body() != null && response.body().recipes != null) {
+                    recipesList = response.body().recipes;
                     setupRecipesAdapter();
                 }
                 recipesProgressBar.setVisibility(View.INVISIBLE);
             }
-        };
-        at.execute();
+
+            @Override
+            public void onFailure(Throwable t) {
+                recipesProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     public interface OnMainFragmentListener {

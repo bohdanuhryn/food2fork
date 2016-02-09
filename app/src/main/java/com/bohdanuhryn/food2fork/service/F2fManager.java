@@ -1,17 +1,11 @@
 package com.bohdanuhryn.food2fork.service;
 
-import android.util.Log;
-
-import com.bohdanuhryn.food2fork.models.Recipe;
 import com.bohdanuhryn.food2fork.models.RecipeGet;
 import com.bohdanuhryn.food2fork.models.RecipeSearchParams;
 import com.bohdanuhryn.food2fork.models.RecipesList;
 
-import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.GsonConverterFactory;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -34,48 +28,36 @@ public class F2fManager {
                 .build();
     }
 
-    public static RecipesList getRecipesList(RecipeSearchParams recipeSearchParams) {
-        RecipesList list = null;
+    public static Call<RecipesList> getRecipesList(RecipeSearchParams recipeSearchParams) {
+        Call<RecipesList> call = null;
         if (retrofit == null) {
             init();
         }
         if (retrofit != null) {
-            try {
-                IF2fApi apiService = retrofit.create(IF2fApi.class);
-                if (recipeSearchParams == null) {
-                    recipeSearchParams = new RecipeSearchParams();
-                }
-                Call<RecipesList> call = apiService.getRecipesList(
-                        API_KEY,
-                        recipeSearchParams.query,
-                        recipeSearchParams.sort,
-                        recipeSearchParams.page
-                );
-                Response<RecipesList> response = call.execute();
-                list = response.body();
-            } catch (IOException e) {
-                Log.e(TAG, "getRecipesList method error! " + e.getMessage());
+            IF2fApi apiService = retrofit.create(IF2fApi.class);
+            if (recipeSearchParams == null) {
+                recipeSearchParams = new RecipeSearchParams();
             }
+            call = apiService.getRecipesList(
+                    API_KEY,
+                    recipeSearchParams.query,
+                    recipeSearchParams.sort,
+                    recipeSearchParams.page
+            );
         }
-        return list;
+        return call;
     }
 
-    public static Recipe getRecipe(String id) {
-        Recipe recipe = null;
+    public static Call<RecipeGet> getRecipe(String id) {
+        Call<RecipeGet> call = null;
         if (retrofit == null) {
             init();
         }
         if (retrofit != null) {
-            try {
-                IF2fApi apiService = retrofit.create(IF2fApi.class);
-                Call<RecipeGet> call = apiService.getRecipeGet(API_KEY, id);
-                Response<RecipeGet> response = call.execute();
-                recipe = response.body().recipe;
-            } catch (Exception e) {
-                Log.e(TAG, "getRecipe method error! " + e.getMessage());
-            }
+            IF2fApi apiService = retrofit.create(IF2fApi.class);
+            call = apiService.getRecipeGet(API_KEY, id);
         }
-        return recipe;
+        return call;
     }
 
 }

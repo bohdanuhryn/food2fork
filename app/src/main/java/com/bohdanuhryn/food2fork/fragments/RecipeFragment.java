@@ -3,8 +3,6 @@ package com.bohdanuhryn.food2fork.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -14,17 +12,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bohdanuhryn.food2fork.R;
-import com.bohdanuhryn.food2fork.loaders.RecipeLoader;
 import com.bohdanuhryn.food2fork.models.Recipe;
+import com.bohdanuhryn.food2fork.models.RecipeGet;
+import com.bohdanuhryn.food2fork.service.F2fManager;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by BohdanUhryn on 04.02.2016.
  */
-public class RecipeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Recipe> {
+public class RecipeFragment extends Fragment {
 
     public static final String TAG = "RecipeFragment";
     public static final String RECIPE_ID = "recipe_id";
@@ -54,23 +55,6 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
 
     public RecipeFragment() {
 
-    }
-
-    @Override
-    public Loader<Recipe> onCreateLoader(int id, Bundle args) {
-        return new RecipeLoader(getActivity(), recipeId);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Recipe> loader, Recipe data) {
-        recipe = data;
-        setupViews();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Recipe> loader) {
-        recipe = null;
-        setupViews();
     }
 
     @Nullable
@@ -106,6 +90,7 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
         }
         setupIngredientsView();
     }
+
     private void setupIngredientsView() {
         if (recipe != null && recipe.ingredients != null) {
             String ingredientsStr = "";
@@ -117,7 +102,20 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     private void loadRecipe() {
-        getLoaderManager().restartLoader(0, null, this).forceLoad();
+        F2fManager.getRecipe(recipeId).enqueue(new Callback<RecipeGet>() {
+            @Override
+            public void onResponse(Response<RecipeGet> response) {
+                if (response.body() != null && response.body().recipe != null) {
+                    recipe = response.body().recipe;
+                    setupViews();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
 }
